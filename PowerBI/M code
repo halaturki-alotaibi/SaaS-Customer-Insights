@@ -1,0 +1,17 @@
+let
+    Source = GoogleBigQuery.Database(),
+    #"saas-data-474609" = Source{[Name="saas-data-474609"]}[Data],
+    #"1_Schema" = #"saas-data-474609"{[Name="1",Kind="Schema"]}[Data],
+    customer_segment_Table = #"1_Schema"{[Name="customer_segment",Kind="Table"]}[Data],
+
+    // تحويل النص JSON إلى كائن واستخراج القيمة الأخيرة (مثل Basic / Gold ...)
+    ExtractSegment = Table.AddColumn(
+        customer_segment_Table,
+        "segment_type",
+        each try 
+            Json.Document([customer_segment])[v][f]{3}[v]
+        otherwise 
+            null
+    )
+in
+    ExtractSegment
