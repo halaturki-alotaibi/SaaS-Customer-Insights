@@ -1,0 +1,71 @@
+ DAX_KPIs
+
+Monthly Recurring Revenue (MRR)
+MRR = 
+SUM(Revenue[amount])
+مجموع الإيرادات الشهرية المتكررة لكل العملاء في الشهر المحدد.
+________________________________________
+Annual Recurring Revenue (ARR)
+ARR = 
+[MRR] * 12
+________________________________________
+Customer Churn Rate
+Customer Churn Rate = 
+DIVIDE(
+    CALCULATE(
+        DISTINCTCOUNT(Customers[customer_id]),
+        NOT(ISBLANK(Customers[churn_date]))
+    ),
+    DISTINCTCOUNT(Customers[customer_id])
+)
+نسبة العملاء الذين تركوا الخدمة مقارنة بإجمالي العملاء.
+________________________________________
+Revenue Churn Rate
+Revenue Churn Rate =
+DIVIDE(
+    CALCULATE(
+        SUM(Revenue[amount]),
+        FILTER(Customers, NOT(ISBLANK(Customers[churn_date])))
+    ),
+    SUM(Revenue[amount])
+)
+نسبة الإيرادات المفقودة من العملاء المغادرين.
+________________________________________
+Customer Acquisition Cost (CAC)
+CAC =
+DIVIDE(
+    SUM(Customers[acquisition_cost]),
+    DISTINCTCOUNT(Customers[customer_id])
+)
+متوسط تكلفة اكتساب العميل الواحد.
+________________________________________
+Customer Lifetime Value (CLTV)
+CLTV =
+VAR AvgMRR = [MRR] / DISTINCTCOUNT(Customers[customer_id])
+VAR AvgLifetimeMonths = 12  -- افتراضي: متوسط مدة الاشتراك بالشهور، يمكن تعديله حسب البيانات
+RETURN
+AvgMRR * AvgLifetimeMonths
+________________________________________
+عدد الاشتراكات:
+Total Subscriptions = COUNT(customer_subscriptions[subscription_id])
+________________________________________
+عدد العملاء الفريدين:
+Total Customers = DISTINCTCOUNT(customer_subscriptions[customer_id])
+________________________________________
+معدل الولاء:
+Loyalty Rate = DIVIDE([Total Subscriptions], [Total Customers])
+دالة DIVIDE أفضل من القسمة العادية لأنها تتجنب القسمة على صفر
+
+________________________________________
+Loyalty Category:
+Loyalty Category =
+VAR rate = [Loyalty Rate]
+RETURN
+    SWITCH(
+        TRUE(),
+        rate >= 1.4, "High Loyalty",
+        rate >= 1.1, "Medium Loyalty",
+        "Low Loyalty"
+    )
+
+
