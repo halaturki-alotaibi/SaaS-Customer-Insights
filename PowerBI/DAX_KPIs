@@ -52,20 +52,5 @@ ________________________________________
 عدد العملاء الفريدين:
 Total Customers = DISTINCTCOUNT(customer_subscriptions[customer_id])
 ________________________________________
-معدل الولاء:
-Loyalty Rate = DIVIDE([Total Subscriptions], [Total Customers])
-دالة DIVIDE أفضل من القسمة العادية لأنها تتجنب القسمة على صفر
-
-________________________________________
-Loyalty Category:
-Loyalty Category =
-VAR rate = [Loyalty Rate]
-RETURN
-    SWITCH(
-        TRUE(),
-        rate >= 1.4, "High Loyalty",
-        rate >= 1.1, "Medium Loyalty",
-        "Low Loyalty"
-    )
 
 
