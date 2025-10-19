@@ -17,7 +17,7 @@ The dashboard provides dynamic insights into **customer behavior, subscription p
 
 ## 📁 Project Structure
 - `/sql` → BigQuery scripts for data aggregation and segmentation  
-- `/powerbi` → Dashboard file (`.pbix`) + screenshots  
+- `/powerbi` → Dashboard file (`.pbix`) + PDF for Dashboard + DAX KPIs Calculations
 - `/dataset` → CSV datasets + notebook demonstrating how the synthetic data was generated 
 
 ## 🚀 Insights
